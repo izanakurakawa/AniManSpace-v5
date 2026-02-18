@@ -32,6 +32,24 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
+  <!-- Alohida Home bo'limi -->
+<div id="home-section"></div>
+
+<script>
+  // Home bo'limini yuklash
+  fetch('home/home.html')
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById('home-section').innerHTML = html;
+    })
+    .catch(err => console.error('Error loading Home section:', err));
+</script>
+
+<!-- Home CSS -->
+<link rel="stylesheet" href="home/home.css">
+
+<!-- Home JS -->
+<script src="home/home.js"></script>
 }
 
 /* ================= SOFT STAR BACKGROUND ================= */
