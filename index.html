@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AniManSpace | Global Anime AI Platform</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+<!-- Global Styles -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Home Section Styles -->
+<link rel="stylesheet" href="home/home.css">
+
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar">
+  <div class="logo">AniManSpace</div>
+  <div class="nav-links">
+    <a href="#" data-section="home">Home</a>
+    <a href="#" data-section="ai-core">AI Core</a>
+    <a href="#" data-section="community">Community</a>
+    <a href="#" data-section="profile">Profile</a>
+    <a href="#" data-section="offline">Offline</a>
+    <a href="#" data-section="lofi">Lofi</a>
+  </div>
+</nav>
+
+<!-- ================= DYNAMIC CONTENT ================= -->
+<div id="main-content"></div>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+const mainContent = document.getElementById('main-content');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+function loadSection(section) {
+  fetch(`${section}/${section}.html`)
+    .then(response => response.text())
+    .then(html => {
+      mainContent.innerHTML = html;
+      if(section === 'home') {
+        // Home JS init
+        if(window.initHome) initHome();
+      }
+      if(section === 'lofi') {
+        if(window.initLofi) initLofi();
+      }
+    })
+    .catch(err => console.error(`Error loading ${section} section:`, err));
+}
+
+// Load Home by default
+loadSection('home');
+
+// Nav click handler
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const section = link.dataset.section;
+    loadSection(section);
+  });
+});
+
+// ================= SOFT STAR FIELD =================
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+for(let i=0;i<150;i++){
+  stars.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, radius:Math.random()*1.2 });
+}
+
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="#ffffff";
+  stars.forEach(star=>{
+    ctx.beginPath();
+    ctx.arc(star.x,star.y,star.radius,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+
+drawStars();
+window.addEventListener("resize",()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  drawStars();
+});
+</script>
+
+<!-- Global JS -->
+<script src="home/home.js"></script>
+<script src="ai-core/ai-core.js"></script>
+<script src="community/community.js"></script>
+<script src="profile/profile.js"></script>
+<script src="offline/offline.js"></script>
+<script src="lofi/lofi.js"></script>
+
+</body>
+  </html>
